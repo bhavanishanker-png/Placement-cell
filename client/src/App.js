@@ -30,6 +30,7 @@ function App() {
 
           {/* Routes with Navbar */}
           <Route element={<LayoutWithNavbar />}>
+          <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Home />} />
             <Route path="/add-student" element={<AddStudentForm />} />
             <Route path="/students" element={<StudentList />} />

@@ -24,6 +24,7 @@ const AddStudentForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+         console.log('Form data:', formData); 
         try {
             // Send student data to the back-end API
             const response = await fetch('http://localhost:5001/api/students', {
@@ -31,11 +32,12 @@ const AddStudentForm = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify([formData])  // This sends a single student object
             });
-
+            
+    
             const result = await response.json();
-
+            console.log(result)
             if (response.ok) {
                 // Reset the form
                 setFormData({
@@ -50,8 +52,6 @@ const AddStudentForm = () => {
                     webdScore: ''
                 });
                 alert('Student added successfully!');
-                // Optionally, trigger a refetch or refresh of the student list
-                // You might need to use state or a context to manage this
             } else {
                 alert(result.message || 'Failed to add student');
             }
@@ -60,7 +60,7 @@ const AddStudentForm = () => {
             alert('Failed to add student');
         }
     };
-
+    
     return (
         <div className="abc">
             <div className="form-container">
@@ -136,8 +136,8 @@ const AddStudentForm = () => {
                                 required
                             >
                                 <option value="" disabled>Select One Batch</option>
-                                <option value="batch1">Batch 1</option>
-                                <option value="batch2">Batch 2</option>
+                                <option value={2023}>2023</option>
+                                <option value={2023}>2024</option>
                             </select>
                         </div>
                     </div>

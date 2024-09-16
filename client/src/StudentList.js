@@ -15,14 +15,15 @@ const StudentList = () => {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
+                console.log('Fetched students:', data); // Log the fetched data
                 setStudentsList(data);
             } catch (error) {
+                console.log(error.message);
                 setError(error.message);
             } finally {
                 setLoading(false);
             }
-        };
-
+        }
         fetchStudents();
     }, []);
 

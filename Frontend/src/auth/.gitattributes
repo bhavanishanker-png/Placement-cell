@@ -1,3 +1,0 @@
-git[[:space:]]lfs[[:space:]]track[[:space:]]path/to/largefile.psd
- filter=lfs diff=lfs merge=lfs -text
-Frontend/.package-lock.json filter=lfs diff=lfs merge=lfs -text

@@ -9,53 +9,30 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// MySQL connection for authorization (auth_db)
-const authDb = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '9398957405@Pp',
-    database: process.env.AUTH_DB_NAME || 'auth_db',
-    port: process.env.DB_PORT || 3306
+// MySQL connection (defaultdb for all operations)
+const defaultdb = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
 });
 
-// MySQL connection for student database (student_db)
-const studentDb = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '9398957405@Pp',
-    database: process.env.STUDENT_DB_NAME || 'student_db',
-    port: process.env.DB_PORT || 3306
-});
-
-// MySQL connection for jobdetails database
-
-
-// Connect to databases
-authDb.connect((err) => {
+// Connect to MySQL
+defaultdb.connect((err) => {
     if (err) {
-        console.error('Error connecting to auth_db:', err.message);
+        console.error('Error connecting to MySQL:', err.message);
         return;
     }
-    console.log('Connected to auth_db MySQL server.');
-});
-
-studentDb.connect((err) => {
-    if (err) {
-        console.error('Error connecting to student_db:', err.message);
-        return;
-    }
-    console.log('Connected to student_db MySQL server.');
+    console.log('Connected to MySQL server.');
 });
 
 // API for user registration
 app.post('/api/register', (req, res) => {
     const { email, password } = req.body;
-  
-    // Validate email and password here (optional)
 
-    // Check if user already exists
     const checkUserQuery = 'SELECT * FROM users WHERE email = ?';
-    authDb.query(checkUserQuery, [email], (err, result) => {
+    defaultdb.query(checkUserQuery, [email], (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Server error' });
         }
@@ -63,15 +40,13 @@ app.post('/api/register', (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash password
         bcrypt.hash(password, 10, (err, hashedPassword) => {
             if (err) {
                 return res.status(500).json({ message: 'Error hashing password' });
             }
 
-            // Insert new user
             const insertUserQuery = 'INSERT INTO users (email, password) VALUES (?, ?)';
-            authDb.query(insertUserQuery, [email, hashedPassword], (err, result) => {
+            defaultdb.query(insertUserQuery, [email, hashedPassword], (err, result) => {
                 if (err) {
                     return res.status(500).json({ message: 'Database error' });
                 }
@@ -81,18 +56,16 @@ app.post('/api/register', (req, res) => {
     });
 });
 
-  
 // API for logging in
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Check if email format is valid
     if (!emailValidator.validate(email)) {
         return res.status(400).json({ message: 'Invalid email format' });
     }
 
     const query = 'SELECT * FROM users WHERE email = ?';
-    authDb.query(query, [email], (err, result) => {
+    defaultdb.query(query, [email], (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Server error' });
         }
@@ -116,8 +89,9 @@ app.post('/api/login', (req, res) => {
 
 // API to get students
 app.get('/api/students', (req, res) => {
+    console.log(req.body)
     const query = 'SELECT * FROM students';
-    studentDb.query(query, (err, results) => {
+    defaultdb.query(query, (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Error fetching students', error: err });
         }
@@ -127,23 +101,48 @@ app.get('/api/students', (req, res) => {
 
 // API to add a student
 app.post('/api/students', (req, res) => {
-    const { name, age, gender, college, batch, status, dsaScore, reactScore, webdScore } = req.body;
+    // Ensure body parser middleware is used
+    const students = req.body;
 
-    if (!name || !age || !gender || !college || !batch || !dsaScore || !reactScore || !webdScore) {
-        return res.status(400).json({ message: 'All fields are required' });
+    // Check if students is an array
+    // if (!Array.isArray(students)) {
+    //     return res.status(400).json({ message: 'Invalid data format' });
+    // }
+
+    // Check if all required fields are present
+    for (const student of students) {
+        if (!student.name || !student.age || !student.gender || !student.college || !student.batch || !student.status || student.dsaScore === undefined || student.reactScore === undefined || student.webdScore === undefined) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
     }
 
-    const insertStudentQuery = `
-        INSERT INTO students (name, age, gender, college, batch, status, dsaScore, reactScore, webdScore) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    // Prepare a bulk insert query
+    const query = `
+        INSERT INTO students (name, age, gender, college, batch, status, dsaScore, reactScore, webdScore)
+        VALUES ?
+    `;
 
-    studentDb.query(insertStudentQuery, [name, age, gender, college, batch, status, dsaScore, reactScore, webdScore], (err, result) => {
+    // Format values for bulk insert
+    const values = students.map(student => [
+        student.name,
+        student.age,
+        student.gender,
+        student.college,
+        student.batch,
+        student.status,
+        student.dsaScore,
+        student.reactScore,
+        student.webdScore
+    ]);
+
+    defaultdb.query(query, [values], (err, result) => {
         if (err) {
-            return res.status(500).json({ message: 'Database error', error: err });
+            return res.status(500).json({ message: 'Error inserting students', error: err });
         }
-        res.status(201).json({ message: 'Student added successfully', studentId: result.insertId });
+        res.status(201).json({ message: 'Students added successfully', result });
     });
 });
+
 
 // API to add an interview
 app.post('/api/interviews', (req, res) => {
@@ -157,7 +156,7 @@ app.post('/api/interviews', (req, res) => {
         INSERT INTO interviews (company, date) 
         VALUES (?, ?)`;
 
-    studentDb.query(insertInterviewQuery, [company, date], (err, result) => {
+    defaultdb.query(insertInterviewQuery, [company, date], (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Database error', error: err });
         }
@@ -170,8 +169,7 @@ app.get('/api/interviews', (req, res) => {
     const interviewQuery = `SELECT * FROM interviews`;
     const studentQuery = `SELECT * FROM students`;
 
-    // First, get all interviews
-    studentDb.query(interviewQuery, (err, interviewResults) => {
+    defaultdb.query(interviewQuery, (err, interviewResults) => {
         if (err) {
             return res.status(500).json({ error: 'Failed to fetch interview data' });
         }
@@ -180,13 +178,11 @@ app.get('/api/interviews', (req, res) => {
             return res.status(404).json({ error: 'No interviews found' });
         }
 
-        // Then, get all students (if students are linked to interviews, adjust this query)
-        studentDb.query(studentQuery, (err, studentResults) => {
+        defaultdb.query(studentQuery, (err, studentResults) => {
             if (err) {
                 return res.status(500).json({ error: 'Failed to fetch students data' });
             }
 
-            // Assuming no direct relationship between interviews and students, send all students for each interview
             const interviewsWithStudents = interviewResults.map(interview => ({
                 companyName: interview.company,
                 date: interview.date,
@@ -204,33 +200,29 @@ app.get('/api/interviews', (req, res) => {
 
 // API to add jobs
 app.post('/api/jobs', (req, res) => {
-    const jobs = req.body; // Expecting an array of job objects
+    const jobs = req.body;
 
-    jobs.forEach(job => {
-        const sql = 'INSERT INTO jobs (id, title, company, type, date, location, salary, logo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        const values = [job.id, job.title, job.company, job.type, job.date, job.location, job.salary, job.logo];
-        
-        studentDb.query(sql, values, (err, result) => {
-            if (err) {
-                console.error('Error inserting job:', err);
-                return;
-            }
-            // console.log('Job inserted:', result);
-        });
+    const insertJobsQuery = 'INSERT INTO jobs (id, title, company, type, date, location, salary, logo) VALUES ?';
+    const values = jobs.map(job => [job.id, job.title, job.company, job.type, job.date, job.location, job.salary, job.logo]);
+
+    defaultdb.query(insertJobsQuery, [values], (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error', error: err });
+        }
+        res.status(201).json({ message: 'Jobs inserted successfully' });
     });
-
-    res.send('Jobs data inserted successfully.');
 });
+
+// API to get jobs
 app.get('/api/jobs', (req, res) => {
-    studentDb.query('SELECT * FROM jobs', (err, results) => {
-      if (err) {
-        console.error('Error fetching jobs:', err);
-        res.status(500).json({ error: 'Database query failed' });
-        return;
-      }
-      res.json(results);
+    const query = 'SELECT * FROM jobs';
+    defaultdb.query(query, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Database query failed' });
+        }
+        res.json(results);
     });
-  });  
+});
 
 // Start the server
 const PORT = process.env.PORT || 5001;
