@@ -2,29 +2,34 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SignImg from '../assets/SignImg.jpg';
 import { signup } from '../api/api.js';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError('');  // Clear previous error
-
+  
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
+  
     try {
       await signup(email, password);
+      navigate('/signin');
       // Optionally redirect or handle successful registration
+
     } catch (error) {
+      console.error('Signup error:', error); // Log error for debugging
       setError(error.response?.data?.message || 'Error registering');
     }
   };
+  
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
