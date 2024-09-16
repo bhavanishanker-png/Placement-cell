@@ -1,0 +1,172 @@
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+.form-container {
+  background-color: whitesmoke;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 700px;
+  margin: 20px auto;
+  border: #000 solid;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button.submit-btn {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button.submit-btn:hover {
+  background-color: #444;
+}
+.abc{
+
+  display: flex;
+  flex-direction: column;
+}
+.student-card{
+  background-color: whitesmoke;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 700px;
+  margin: 20px auto;
+}
+.studentName{
+  display: flex;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-radius: 15px 15px 0  0;
+  background-color: rgb(104, 187, 246);
+  padding: 10px;
+  justify-content: center;
+}
+.inputBox{
+  width: 370px;
+}
+.selectBox{
+  /* margin-left: 30px; */
+  /* padding-right: 30px; */
+  width: 400px;
+}
+.student-info{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+.student-name{
+  width: 100%;
+}
+.student-name div{
+  display: flex;
+  justify-content: space-between;
+}
+/*  */
+.student-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.student-info {
+  padding: 10px;
+}
+
+.student-photo img {
+  display: block;
+  margin: 10px auto;
+}
+
+.student-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.student-details p {
+  width: 45%;
+  margin: 5px 0;
+}
+
+.interviews table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+.interviews th, .interviews td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.interviews th {
+  background-color: #f4f4f4;
+}
+.abc{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.student-list{
+  display: flex;
+  flex-direction: column;
+  border: #000 solid;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 750px;
+  border-radius: 10px;
+  /* left: 50%; */
+  right: -50%;
+}
+

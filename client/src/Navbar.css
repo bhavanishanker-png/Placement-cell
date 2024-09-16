@@ -1,0 +1,92 @@
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: rgb(57, 165, 242);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Left section (Logo and Title) */
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.navbar-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.navbar-subtitle {
+    font-size: 12px;
+    margin: 0;
+    color: #555;
+}
+
+/* Right section (Links) */
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-links {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li {
+    margin-left: 20px;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-links a:hover {
+    color: #000;
+}
+
+.logout-btn {
+    border: 1px solid #000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.logout-btn:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .navbar-right {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    .navbar-links li {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}
