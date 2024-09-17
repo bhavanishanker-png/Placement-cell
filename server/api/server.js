@@ -7,7 +7,11 @@ const emailValidator = require('email-validator');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://placement-cell-client1.vercel.app/job-portal',  // Replace with your actual Vercel frontend URL
+    credentials: true
+  }));
+  
 
 // MySQL connection (defaultdb for all operations)
 const defaultdb = mysql.createConnection({
