@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import StudentCard from './StudentCard';
 import './App.css';
-
+const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 const StudentList = () => {
     const [studentsList, setStudentsList] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,7 +10,7 @@ const StudentList = () => {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/students');
+                const response = await fetch(`${backendURL}/api/students`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

@@ -4,14 +4,23 @@ const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const emailValidator = require('email-validator');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: 'https://placement-cell-client1.vercel.app/job-portal',  // Replace with your actual Vercel frontend URL
+    origin: ['http://localhost:3000', 'https://placement-cell-client1.vercel.app'],
     credentials: true
-  }));
-  
+}));
+
+// Rate limiting middleware
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+console.log(process.env.DB_PASSWORD)
 
 // MySQL connection (defaultdb for all operations)
 const defaultdb = mysql.createConnection({
@@ -31,9 +40,25 @@ defaultdb.connect((err) => {
     console.log('Connected to MySQL server.');
 });
 
+// Centralized error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Server Error', error: err.message });
+});
+
 // API for user registration
 app.post('/api/register', (req, res) => {
     const { email, password } = req.body;
+
+    // Validate email
+    if (!email || !emailValidator.validate(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    // Validate password
+    if (!password) {
+        return res.status(400).json({ message: 'Password cannot be empty' });
+    }
 
     const checkUserQuery = 'SELECT * FROM users WHERE email = ?';
     defaultdb.query(checkUserQuery, [email], (err, result) => {
@@ -44,6 +69,7 @@ app.post('/api/register', (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
+        // Hash the password
         bcrypt.hash(password, 10, (err, hashedPassword) => {
             if (err) {
                 return res.status(500).json({ message: 'Error hashing password' });
@@ -64,8 +90,12 @@ app.post('/api/register', (req, res) => {
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
 
-    if (!emailValidator.validate(email)) {
+    if (!email || !emailValidator.validate(email)) {
         return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    if (!password) {
+        return res.status(400).json({ message: 'Password cannot be empty' });
     }
 
     const query = 'SELECT * FROM users WHERE email = ?';
@@ -91,9 +121,8 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// API to get students
+// API to get students (no authentication)
 app.get('/api/students', (req, res) => {
-    console.log(req.body)
     const query = 'SELECT * FROM students';
     defaultdb.query(query, (err, results) => {
         if (err) {
@@ -105,28 +134,18 @@ app.get('/api/students', (req, res) => {
 
 // API to add a student
 app.post('/api/students', (req, res) => {
-    // Ensure body parser middleware is used
     const students = req.body;
 
-    // Check if students is an array
-    // if (!Array.isArray(students)) {
-    //     return res.status(400).json({ message: 'Invalid data format' });
-    // }
-
-    // Check if all required fields are present
     for (const student of students) {
         if (!student.name || !student.age || !student.gender || !student.college || !student.batch || !student.status || student.dsaScore === undefined || student.reactScore === undefined || student.webdScore === undefined) {
-            return res.status(400).json({ message: "All fields are required" });
+            return res.status(400).json({ message: 'All fields are required' });
         }
     }
 
-    // Prepare a bulk insert query
     const query = `
         INSERT INTO students (name, age, gender, college, batch, status, dsaScore, reactScore, webdScore)
         VALUES ?
     `;
-
-    // Format values for bulk insert
     const values = students.map(student => [
         student.name,
         student.age,
@@ -147,7 +166,6 @@ app.post('/api/students', (req, res) => {
     });
 });
 
-
 // API to add an interview
 app.post('/api/interviews', (req, res) => {
     const { company, date } = req.body;
@@ -156,10 +174,7 @@ app.post('/api/interviews', (req, res) => {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const insertInterviewQuery = `
-        INSERT INTO interviews (company, date) 
-        VALUES (?, ?)`;
-
+    const insertInterviewQuery = 'INSERT INTO interviews (company, date) VALUES (?, ?)';
     defaultdb.query(insertInterviewQuery, [company, date], (err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Database error', error: err });
@@ -170,8 +185,8 @@ app.post('/api/interviews', (req, res) => {
 
 // API to get interviews with students
 app.get('/api/interviews', (req, res) => {
-    const interviewQuery = `SELECT * FROM interviews`;
-    const studentQuery = `SELECT * FROM students`;
+    const interviewQuery = 'SELECT * FROM interviews';
+    const studentQuery = 'SELECT * FROM students';
 
     defaultdb.query(interviewQuery, (err, interviewResults) => {
         if (err) {
@@ -222,7 +237,7 @@ app.get('/api/jobs', (req, res) => {
     const query = 'SELECT * FROM jobs';
     defaultdb.query(query, (err, results) => {
         if (err) {
-            return res.status(500).json({ error: 'Database query failed' });
+            return res.status(500).json({ message: 'Error fetching jobs', error: err });
         }
         res.json(results);
     });

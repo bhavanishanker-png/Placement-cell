@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-
+const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 const AddStudentForm = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -27,7 +27,7 @@ const AddStudentForm = () => {
          console.log('Form data:', formData); 
         try {
             // Send student data to the back-end API
-            const response = await fetch('http://localhost:5001/api/students', {
+            const response = await fetch(`${backendURL}/api/students`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

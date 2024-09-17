@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./jobCard";
-
+const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true); // Added loading state
   const [error, setError] = useState(null); // Added error state
-
+console.log(`${backendURL}/api/jobs`)
   useEffect(() => {
-    fetch("http://localhost:5001/api/jobs")
+    fetch(`${backendURL}/api/jobs`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

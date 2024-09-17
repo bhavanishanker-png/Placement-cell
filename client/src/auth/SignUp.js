@@ -20,7 +20,8 @@ const SignUp = () => {
     }
   
     try {
-      await signup(email, password);
+      const result = await signup(email, password);
+    alert(result.message);  // Successful signup
       navigate('/signin');
       // Optionally redirect or handle successful registration
 
