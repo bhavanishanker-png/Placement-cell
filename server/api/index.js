@@ -13,16 +13,16 @@ app.use(cors({
     credentials: true
 }));
 
-// Rate limiting middleware
+
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
+    windowMs: 15 * 60 * 1000, 
+    max: 100 
 });
 app.use(limiter);
 
 console.log(process.env.DB_PASSWORD)
 
-// MySQL connection (defaultdb for all operations)
+
 const defaultdb = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -39,6 +39,12 @@ defaultdb.connect((err) => {
     }
     console.log('Connected to MySQL server.');
 });
+
+
+app.get('/',(req,res)=>{
+    res.send('Hello World');
+})
+
 app.post('/api/create-jobs-table', (req, res) => {
     const createTableQuery = `
         CREATE TABLE IF NOT EXISTS jobs (
