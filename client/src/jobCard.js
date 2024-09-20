@@ -1,7 +1,8 @@
 import React from 'react';
 import './jobCard.css'; // Separate CSS file for styling
-
-const JobCard = ({ job }) => {
+import {Link} from 'react-router-dom';
+const JobCard = ({ job ,applyLink}) => {
+    // logos=["/Users/bhavanishanker/Desktop/Placement-cell/client/src/assets/apple.avif"]
     return (
         <div className="job-card">
             <img src={job.logo} alt={job.company} className="job-logo" />
@@ -13,7 +14,7 @@ const JobCard = ({ job }) => {
                 <p><strong>Location:</strong> {job.location}</p>
                 <p><strong>Salary:</strong> {job.salary}</p>
             </div>
-            <button className="apply-btn">Apply</button>
+            <Link  to={applyLink}><button>Apply</button></Link>
         </div>
     );
 };

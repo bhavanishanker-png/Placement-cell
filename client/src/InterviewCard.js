@@ -13,8 +13,6 @@ const InterviewCard = ({ interview, students }) => {
                 students.map((student, index) => (
                     <div className="student-row" key={index}>
                         <p><strong>Name:</strong> {student.name}</p>
-                        <p><strong>Email:</strong> {student.email}</p>
-                        <p><strong>Result:</strong> {student.result}</p>
                         <button className="delete-btn">Delete</button>
                     </div>
                 ))
