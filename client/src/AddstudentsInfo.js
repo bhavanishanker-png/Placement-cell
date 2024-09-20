@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 const AddStudentForm = () => {
     const [formData, setFormData] = useState({
         name: '',

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001'; // Fallback to local URL during development
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001'; // Fallback to local URL during development
 
 export const signup = async (email, password) => {
   try {

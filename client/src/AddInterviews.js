@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Interview.css"; // Importing the CSS file
-const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 const AddInterview = () => {
   const [company, setCompany] = useState("");
   const [date, setDate] = useState("");

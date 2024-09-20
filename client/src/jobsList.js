@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import JobCard from './jobCard';
-import slack from  './assets/slack.svg';
 import apple from './assets/apple.avif';
-import zoom from './assets/zoom.webp';
 import asana from './assets/asana.png';
-const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+import slack from './assets/slack.svg';
+import zoom from './assets/zoom.webp';
+import JobCard from './jobCard';
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);

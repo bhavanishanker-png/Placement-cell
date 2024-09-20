@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import StudentCard from './StudentCard';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import StudentCard from './StudentCard';
 
-const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 
 const StudentList = () => {
     const [studentsList, setStudentsList] = useState([]);

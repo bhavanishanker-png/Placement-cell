@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Interview.css'; // Importing the CSS file
 import InterviewCard from './InterviewCard'; // Importing InterviewCard component
-const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001';
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 const ScheduledInterviews = () => {
     const [interviews, setInterviews] = useState([]); // Store multiple interviews
     const [expandedInterviewIndex, setExpandedInterviewIndex] = useState(null); // Track the expanded interview
