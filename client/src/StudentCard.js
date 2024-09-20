@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const backendURL = 'http://localhost:5001';
+const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 
 function StudentCard({ student, refreshStudents }) {
   const [isOpen, setIsOpen] = useState(false);
