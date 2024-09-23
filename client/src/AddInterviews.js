@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import "./Interview.css"; // Importing the CSS file
+
 const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
+
 const AddInterview = () => {
   const [company, setCompany] = useState("");
   const [date, setDate] = useState("");
   const [message, setMessage] = useState("");
-//   console.log(date)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Form data to be sent to the backend
     const interviewData = { company, date };
 
     fetch(`${backendURL}/api/interviews`, {
@@ -35,39 +35,41 @@ const AddInterview = () => {
   };
 
   return (
-    <div className="form-container">
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <h1>Add an Interview</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
+        <h1 className="text-2xl font-bold mb-4 text-center">Add an Interview</h1>
+
+        {message && <p className="text-center text-red-500 mb-4">{message}</p>}
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">Company</label>
+            <input
+              type="text"
+              id="company"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+              placeholder="Enter company name"
+              required
+              className="block w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+              className="block w-full p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+          <button type="submit" className="w-full bg-green-900 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">
+            Add Interview
+          </button>
+        </form>
       </div>
-
-      {message && <p>{message}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group1">
-          <label htmlFor="company">Company</label>
-          <input
-            type="text"
-            id="company"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-            placeholder="Enter company name"
-            required
-          />
-        </div>
-        <div className="form-group1">
-          <label htmlFor="date">Date</label>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="submit-btn">
-          Add Interview
-        </button>
-      </form>
     </div>
   );
 };

@@ -1,35 +1,72 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBriefcase, faUser, faDownload, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import { faHome, faBriefcase, faUser, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './Context/AuthContext';
 
 const Navbar = () => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const { loginState, setLoginState } = useAuth();
+    const navigate = useNavigate();
 
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen);
+    const handleLogout = () => {
+        setLoginState(false); // Adjust as needed for your authentication logic
+        navigate("/signin"); // Redirect to sign-in after logout
+    };
+
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
     };
 
     return (
-        <nav className="navbar">
-            <div className="navbar-left">
-                <h1 className="navbar-title">Newton School</h1>
-            </div>
-            <div className="navbar-right">
-                <ul className={`navbar-links ${isMobileMenuOpen ? 'open' : ''}`}>
-                    <li><a href="dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</a></li>
-                    <li><a href="Add-student"><FontAwesomeIcon icon={faUser} /> Add new Student</a></li>
-                    <li><a href="Add-Interview"><FontAwesomeIcon icon={faUser} /> Add new Interview</a></li>
-                    <li><a href="job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</a></li>
-                    <li><Link to="signin" className="logout-btn"><FontAwesomeIcon icon={faSignOutAlt} /> Logout</Link></li>
-                </ul>
-                <div className="hamburger" onClick={toggleMobileMenu}>
-                    <FontAwesomeIcon icon={faBars} />
+        <nav className="navbar flex flex-col bg-custom-green p-4">
+            <div className="container mx-auto flex justify-between items-center">
+                <div className="text-lg font-bold">
+                    <Link to="/">
+                        <button className="cursor-pointer">Newton<span className="text-red-500">School</span></button>
+                    </Link>
+                </div>
+                <div className={`navbar-links hidden md:flex items-center space-x-6`}>
+                    <ul className="flex space-x-6">
+                        <li><Link to="/dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</Link></li>
+                        <li><Link to="/add-student"><FontAwesomeIcon icon={faUser} /> Add New Student</Link></li>
+                        <li><Link to="/add-interview"><FontAwesomeIcon icon={faUser} /> Add New Interview</Link></li>
+                        <li><Link to="/job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</Link></li>
+                        {loginState ? (
+                            <li>
+                                <button onClick={handleLogout} className="logout-btn">
+                                    <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+                                </button>
+                            </li>
+                        ) : (
+                            <li><Link to="/signin" className="logout-btn"><FontAwesomeIcon icon={faSignOutAlt} /> Sign In</Link></li>
+                        )}
+                    </ul>
+                </div>
+                <div className="md:hidden">
+                    <button onClick={toggleMenu} className="focus:outline-none">
+                        <FontAwesomeIcon icon={faBars} />
+                    </button>
                 </div>
             </div>
+
+            {isOpen && (
+                <div className="md:hidden flex items-start">
+                    <ul className="flex flex-col space-y-2">
+                        <li><Link to="/dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</Link></li>
+                        <li><Link to="/add-student"><FontAwesomeIcon icon={faUser} /> Add New Student</Link></li>
+                        <li><Link to="/add-interview"><FontAwesomeIcon icon={faUser} /> Add New Interview</Link></li>
+                        <li><Link to="/job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</Link></li>
+                        {loginState ? (
+                            <li><button onClick={handleLogout} className="logout-btn"><FontAwesomeIcon icon={faSignOutAlt} /> Logout</button></li>
+                        ) : (
+                            <li><Link to="/signin" className="logout-btn"><FontAwesomeIcon icon={faSignOutAlt} /> Sign In</Link></li>
+                        )}
+                    </ul>
+                </div>
+            )}
         </nav>
     );
-}
+};
 
 export default Navbar;

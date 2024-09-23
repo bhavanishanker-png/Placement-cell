@@ -1,19 +1,18 @@
 import React from 'react';
-import './Interview.css'; // Importing the CSS file
 
 const InterviewCard = ({ interview, students }) => {
     return (
-        <div className="interview-card">
-            <h2>Interview Details</h2>
-            <p><strong>Company:</strong> {interview.companyName}</p>
-            <p><strong>Date:</strong> {interview.date}</p>
+        <div className="bg-gray-100 p-4 rounded-lg mt-2">
+            <h2 className="text-xl font-bold mb-2">Interview Details</h2>
+            <p className="mb-1"><strong>Company:</strong> {interview.companyName}</p>
+            <p className="mb-4"><strong>Date:</strong> {interview.date}</p>
 
-            <h3>Enrolled Students</h3>
+            <h3 className="text-lg font-semibold mb-1">Enrolled Students</h3>
             {students.length > 0 ? (
                 students.map((student, index) => (
-                    <div className="student-row" key={index}>
-                        <p><strong>Name:</strong> {student.name}</p>
-                        <button className="delete-btn">Delete</button>
+                    <div className="flex justify-between items-center border-b py-2" key={index}>
+                        <p className="flex-1"><strong>Name:</strong> {student.name}</p>
+                        <button className="text-red-500 hover:text-red-700">Delete</button>
                     </div>
                 ))
             ) : (

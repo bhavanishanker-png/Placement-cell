@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './App.css';
+
 const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
+
 const AddStudentForm = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -24,9 +25,8 @@ const AddStudentForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-         console.log('Form data:', formData); 
+        console.log('Form data:', formData);
         try {
-            // Send student data to the back-end API
             const response = await fetch(`${backendURL}/api/students`, {
                 method: 'POST',
                 headers: {
@@ -34,12 +34,10 @@ const AddStudentForm = () => {
                 },
                 body: JSON.stringify([formData])  // This sends a single student object
             });
-            
-    
+
             const result = await response.json();
-            console.log(result)
+            console.log(result);
             if (response.ok) {
-                // Reset the form
                 setFormData({
                     name: '',
                     age: '',
@@ -60,130 +58,57 @@ const AddStudentForm = () => {
             alert('Failed to add student');
         }
     };
-    
+
     return (
-        <div className="abc">
-            <div className="form-container">
-                <h2>ADD NEW STUDENT</h2>
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-xl">{/* Increased width here */}
+                <h2 className="text-2xl font-bold mb-4 text-center">Add New Student</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <div className="inputBox">
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                placeholder="Enter Name"
-                                required
-                            />
+                    {Object.entries(formData).map(([key, value]) => (
+                        <div key={key} className="mb-4">
+                            <label htmlFor={key} className="block text-sm font-medium text-gray-700 mb-1">
+                                {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </label>
+                            {key === 'gender' || key === 'batch' ? (
+                                <select
+                                    id={key}
+                                    name={key}
+                                    value={value}
+                                    onChange={handleChange}
+                                    required
+                                    className="block w-full p-2 border border-gray-300 rounded-md"
+                                >
+                                    <option value="" disabled>Select {key.charAt(0).toUpperCase() + key.slice(1)}</option>
+                                    {key === 'gender' ? (
+                                        <>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option value={2023}>2023</option>
+                                            <option value={2024}>2024</option>
+                                        </>
+                                    )}
+                                </select>
+                            ) : (
+                                <input
+                                    type={key.includes('Score') || key === 'age' ? 'number' : 'text'}
+                                    id={key}
+                                    name={key}
+                                    value={value}
+                                    onChange={handleChange}
+                                    placeholder={`Enter ${key.charAt(0).toUpperCase() + key.slice(1)}`}
+                                    required
+                                    className="block w-full p-2 border border-gray-300 rounded-md"
+                                />
+                            )}
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="age">Age</label>
-                        <div className="inputBox">
-                            <input
-                                type="number"
-                                id="age"
-                                name="age"
-                                value={formData.age}
-                                onChange={handleChange}
-                                placeholder="Enter Age"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="gender">Gender</label>
-                        <div className="selectBox">
-                            <select
-                                id="gender"
-                                name="gender"
-                                value={formData.gender}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="" disabled>Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="college">College</label>
-                        <div className="inputBox">
-                            <input
-                                type="text"
-                                id="college"
-                                name="college"
-                                value={formData.college}
-                                onChange={handleChange}
-                                placeholder="Enter College"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="batch">Batch</label>
-                        <div className="selectBox">
-                            <select
-                                id="batch"
-                                name="batch"
-                                value={formData.batch}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="" disabled>Select One Batch</option>
-                                <option value={2023}>2023</option>
-                                <option value={2023}>2024</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="dsaScore">DSA Score</label>
-                        <div className="inputBox">
-                            <input
-                                type="number"
-                                id="dsaScore"
-                                name="dsaScore"
-                                value={formData.dsaScore}
-                                onChange={handleChange}
-                                placeholder="Marks Out of 30"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="reactScore">React Score</label>
-                        <div className="inputBox">
-                            <input
-                                type="number"
-                                id="reactScore"
-                                name="reactScore"
-                                value={formData.reactScore}
-                                onChange={handleChange}
-                                placeholder="Marks Out of 30"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="webdScore">WebD Score</label>
-                        <div className="inputBox">
-                            <input
-                                type="number"
-                                id="webdScore"
-                                name="webdScore"
-                                value={formData.webdScore}
-                                onChange={handleChange}
-                                placeholder="Marks Out of 30"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <button type="submit" className="submit-btn">Add Student</button>
+                    ))}
+                    <button type="submit" className="w-full bg-green-900 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                        Add Student
+                    </button>
                 </form>
             </div>
         </div>

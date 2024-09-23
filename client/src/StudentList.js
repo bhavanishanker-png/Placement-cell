@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
 import StudentCard from './StudentCard';
 
 const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
@@ -23,24 +22,26 @@ const StudentList = () => {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         fetchStudents();
     }, []);
 
     return (
-        <div className="student-list">
-            <h1>Students List</h1>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
-            {studentsList.length > 0 ? (
-                studentsList.map((student) => (
-                    <StudentCard key={student.id} student={student} refreshStudents={fetchStudents} />
-                ))
-            ) : (
-                <p>No students available</p>
-            )}
+        <div className="w-full max-w-6xl mx-auto p-6 border border-gray-600 rounded-lg">
+            <h1 className="text-3xl font-bold mb-6 text-center">Students List</h1>
+            {loading && <p className="text-center">Loading...</p>}
+            {error && <p className="text-center text-red-500">Error: {error}</p>}
+
+                {studentsList.length > 0 ? (
+                    studentsList.map((student) => (
+                        <StudentCard key={student.id} student={student} refreshStudents={fetchStudents} />
+                    ))
+                ) : (
+                    <p className="text-center">No students available</p>
+                )}
+
         </div>
     );
 };
