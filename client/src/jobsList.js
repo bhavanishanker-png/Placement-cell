@@ -4,6 +4,7 @@ import asana from './assets/asana.png';
 import slack from './assets/slack.svg';
 import zoom from './assets/zoom.webp';
 import JobCard from './jobCard';
+
 const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 
 const JobList = () => {
@@ -30,17 +31,17 @@ const JobList = () => {
       });
   }, []);
 
-  const logos = [
-    slack,
-    apple,
-    zoom,
-    asana
+  const logos = [slack, apple, zoom, asana];
+  const applyLinks = [
+    "https://slack.com/intl/en-in/careers",
+    'https://jobs.apple.com/en-in/details/200566914/senior-digital-support-strategy-program-manager?team=SFTWR',
+    "https://careers.zoom.us/",
+    "https://asana.com/id/jobs/all"
   ];
-  const applyLinks=["https://slack.com/intl/en-in/careers",'https://jobs.apple.com/en-in/details/200566914/senior-digital-support-strategy-program-manager?team=SFTWR',"https://careers.zoom.us/","https://asana.com/id/jobs/all"]
-  // Create a new array with job logos assigned
+
   const jobsWithLogos = jobs.map((job, index) => ({
     ...job,
-    logo: logos[index % logos.length] // Use modulo to avoid out-of-bounds errors
+    logo: logos[index % logos.length]
   }));
 
   if (loading) {
@@ -52,12 +53,14 @@ const JobList = () => {
   }
 
   return (
-    <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <div className="job-list" style={{ width: "800px" }}>
+    <div className="flex justify-center items-center w-full py-8">
+      <div className="job-list w-full max-w-2xl p-4">
         {jobsWithLogos.length === 0 ? (
           <p>No jobs available at the moment.</p>
         ) : (
-          jobsWithLogos.map((job,i) => <JobCard key={job.id} job={job} applyLink={applyLinks[i]}/>)
+          jobsWithLogos.map((job, i) => (
+            <JobCard key={job.id} job={job} applyLink={applyLinks[i]} />
+          ))
         )}
       </div>
     </div>
