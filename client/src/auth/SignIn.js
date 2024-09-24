@@ -13,7 +13,6 @@ const SignIn = () => {
     setError('');
     try {
       const result = await signin(email, password);
-    alert(result.message);  // Successful signup
       navigate('/dashboard');  // Redirect to dashboard on successful login
     } catch (error) {
       setError(error.response?.data?.message || 'Error logging in');  // Handle login error
