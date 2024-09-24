@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 
 const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 
@@ -15,6 +16,23 @@ const AddStudentForm = () => {
         webdScore: ''
     });
 
+    const [existingStudents, setExistingStudents] = useState([]);
+    
+    useEffect(() => {
+        // Fetch existing students
+        const fetchStudents = async () => {
+            try {
+                const response = await fetch(`${backendURL}/api/students`);
+                const data = await response.json();
+                setExistingStudents(data);
+            } catch (error) {
+                console.error('Error fetching students:', error);
+            }
+        };
+
+        fetchStudents();
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -23,8 +41,18 @@ const AddStudentForm = () => {
         });
     };
 
+    const isDuplicateStudent = () => {
+        return existingStudents.some(student => student.name === formData.name && student.college === formData.college);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (isDuplicateStudent()) {
+            alert('This student already exists in the database.');
+            return;
+        }
+
         console.log('Form data:', formData);
         try {
             const response = await fetch(`${backendURL}/api/students`, {
@@ -32,7 +60,7 @@ const AddStudentForm = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify([formData])  // This sends a single student object
+                body: JSON.stringify([formData])
             });
 
             const result = await response.json();
@@ -58,10 +86,9 @@ const AddStudentForm = () => {
             alert('Failed to add student');
         }
     };
-
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-xl">{/* Increased width here */}
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-xl">
                 <h2 className="text-2xl font-bold mb-4 text-center">Add New Student</h2>
                 <form onSubmit={handleSubmit}>
                     {Object.entries(formData).map(([key, value]) => (
@@ -116,3 +143,4 @@ const AddStudentForm = () => {
 };
 
 export default AddStudentForm;
+
