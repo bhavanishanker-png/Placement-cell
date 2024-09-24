@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const backendURL = "https://server-placement.vercel.app" || 'http://localhost:5001';
 
@@ -6,11 +6,44 @@ const AddInterview = () => {
   const [company, setCompany] = useState("");
   const [date, setDate] = useState("");
   const [message, setMessage] = useState("");
+  const [existingInterviews, setExistingInterviews] = useState([]);
+
+  useEffect(() => {
+    // Fetch existing interviews
+    const fetchInterviews = async () => {
+      try {
+        const response = await fetch(`${backendURL}/api/interviews`);
+        const data = await response.json();
+        setExistingInterviews(data);
+      } catch (error) {
+        console.error('Error fetching interviews:', error);
+      }
+    };
+
+    fetchInterviews();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const interviewData = { company, date };
+
+    // Check if the date is valid (not in the past)
+    const today = new Date().toISOString().split("T")[0];  // Get today's date in YYYY-MM-DD format
+    if (date < today) {
+      setMessage("Interview date cannot be in the past.");
+      return;
+    }
+
+    // Check for duplicates
+    const isDuplicateInterview = existingInterviews.some(
+      (interview) => interview.company === company && interview.date === date
+    );
+
+    if (isDuplicateInterview) {
+      setMessage("This interview already exists.");
+      return;
+    }
 
     fetch(`${backendURL}/api/interviews`, {
       method: "POST",
