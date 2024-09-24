@@ -64,7 +64,7 @@ const Navbar = () => {
               </li>
             ) : (
               <li>
-                <Link to="/signin" className="logout-btn">
+                <Link to="/signin" className="logout-btn text-white">
                   <FontAwesomeIcon icon={faSignOutAlt} /> Sign In
                 </Link>
               </li>
@@ -104,13 +104,13 @@ const Navbar = () => {
             </li>
             {loginState ? (
               <li>
-                <button onClick={handleLogout} className="logout-btn">
+                <button onClick={handleLogout} className="logout-btn text-white">
                   <FontAwesomeIcon icon={faSignOutAlt} /> Logout
                 </button>
               </li>
             ) : (
               <li>
-                <Link to="/signin" className="logout-btn">
+                <Link to="/signin" className="logout-btn text-white">
                   <FontAwesomeIcon icon={faSignOutAlt} /> Sign In
                 </Link>
               </li>
