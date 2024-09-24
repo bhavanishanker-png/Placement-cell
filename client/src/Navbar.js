@@ -36,22 +36,22 @@ const Navbar = () => {
         </div>
         <div className="hidden md:flex items-center space-x-6">
           <ul className="flex space-x-6">
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/dashboard">
                 <FontAwesomeIcon icon={faHome} /> Dashboard
               </Link>
             </li>
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/add-student">
                 <FontAwesomeIcon icon={faUser} /> Add New Student
               </Link>
             </li>
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/add-interview">
                 <FontAwesomeIcon icon={faUser} /> Add New Interview
               </Link>
             </li>
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/job-portal">
                 <FontAwesomeIcon icon={faBriefcase} /> Job Portal
               </Link>
@@ -82,22 +82,22 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden flex flex-col items-start mt-2">
           <ul className="flex flex-col space-y-2">
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/dashboard">
                 <FontAwesomeIcon icon={faHome} /> Dashboard
               </Link>
             </li>
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/add-student">
                 <FontAwesomeIcon icon={faUser} /> Add New Student
               </Link>
             </li>
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/add-interview">
                 <FontAwesomeIcon icon={faUser} /> Add New Interview
               </Link>
             </li>
-            <li className="text-white-100">
+            <li className="text-white">
               <Link to="/job-portal">
                 <FontAwesomeIcon icon={faBriefcase} /> Job Portal
               </Link>
