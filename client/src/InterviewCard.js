@@ -12,7 +12,7 @@ const InterviewCard = ({ interview, students }) => {
                 students.map((student, index) => (
                     <div className="flex justify-between items-center border-b py-2" key={index}>
                         <p className="flex-1"><strong>Name:</strong> {student.name}</p>
-                        <button className="text-red-500 hover:text-red-700">Delete</button>
+                        // <button className="text-red-500 hover:text-red-700">Delete</button>
                     </div>
                 ))
             ) : (
