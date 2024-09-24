@@ -28,10 +28,10 @@ const Navbar = () => {
                 </div>
                 <div className={`navbar-links hidden md:flex items-center space-x-6`}>
                     <ul className="flex space-x-6">
-                        <li><Link to="/dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</Link></li>
-                        <li><Link to="/add-student"><FontAwesomeIcon icon={faUser} /> Add New Student</Link></li>
-                        <li><Link to="/add-interview"><FontAwesomeIcon icon={faUser} /> Add New Interview</Link></li>
-                        <li><Link to="/job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</Link></li>
+                        <li className='text-white-100'><Link to="/dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</Link></li>
+                        <li className='text-white-100'><Link to="/add-student"><FontAwesomeIcon icon={faUser} /> Add New Student</Link></li>
+                        <li className='text-white-100'><Link to="/add-interview"><FontAwesomeIcon icon={faUser} /> Add New Interview</Link></li>
+                        <li className='text-white-100'><Link to="/job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</Link></li>
                         {loginState ? (
                             <li>
                                 <button onClick={handleLogout} className="logout-btn">
@@ -53,10 +53,10 @@ const Navbar = () => {
             {isOpen && (
                 <div className="md:hidden flex items-start">
                     <ul className="flex flex-col space-y-2">
-                        <li><Link to="/dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</Link></li>
-                        <li><Link to="/add-student"><FontAwesomeIcon icon={faUser} /> Add New Student</Link></li>
-                        <li><Link to="/add-interview"><FontAwesomeIcon icon={faUser} /> Add New Interview</Link></li>
-                        <li><Link to="/job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</Link></li>
+                        <li className='text-white-100'><Link to="/dashboard"><FontAwesomeIcon icon={faHome} /> Dashboard</Link></li>
+                        <li className='text-white-100'><Link to="/add-student"><FontAwesomeIcon icon={faUser} /> Add New Student</Link></li>
+                        <li className='text-white-100'><Link to="/add-interview"><FontAwesomeIcon icon={faUser} /> Add New Interview</Link></li>
+                        <li className='text-white-100'><Link to="/job-portal"><FontAwesomeIcon icon={faBriefcase} /> Job Portal</Link></li>
                         {loginState ? (
                             <li><button onClick={handleLogout} className="logout-btn"><FontAwesomeIcon icon={faSignOutAlt} /> Logout</button></li>
                         ) : (
