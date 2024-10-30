@@ -37,6 +37,7 @@ const StudentCard = ({ student, refreshStudents }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
+        alert("Student deleted successfully!");
         refreshStudents();
       })
       .catch((error) => {
@@ -58,6 +59,7 @@ const StudentCard = ({ student, refreshStudents }) => {
       })
       .then(() => {
         setEditMode(false);
+        alert("Student updated successfully!");
         refreshStudents();
       })
       .catch((error) => {

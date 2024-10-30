@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 const backendURL =
   "https://server-placement.vercel.app" || "http://localhost:5001";
 
-const InterviewCard = ({ interview, expandAll, refreshInterviews }) => {
-    console.log(interview)
+const InterviewCard = ({ interview,refreshInterviews }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editedInterview, setEditedInterview] = useState({ ...interview });
@@ -67,7 +66,6 @@ const handleEditInterview = async () => {
 
 
   // Check if the card should be open based on expandAll state
-  const shouldExpand = expandAll || isOpen;
 
   return (<div className="border border-green-300 rounded-lg mb-6 w-full shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-white">
     <div
@@ -75,10 +73,10 @@ const handleEditInterview = async () => {
       onClick={toggleDetails}
     >
       <h3 className="text-xl font-semibold">{interview.companyName}</h3>
-      <span className="text-xl font-bold">{shouldExpand ? "▲" : "▼"}</span>
+      <span className="text-xl font-bold">{isOpen ? "▲" : "▼"}</span>
     </div>
   
-    {shouldExpand && (
+    {isOpen && (
       <div className="p-4 border-t border-green-200 bg-green-50 transition-all duration-500 ease-in-out">
         <div className="p-4 rounded-lg mt-2">
           {/* Add an avatar or logo here if applicable */}
@@ -146,7 +144,7 @@ const handleEditInterview = async () => {
             </div>
           )}
   
-          {/* <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-6">
             {!editMode && (
               <button
                 onClick={() => setEditMode(true)}
@@ -161,7 +159,7 @@ const handleEditInterview = async () => {
             >
               Delete
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
     )}
