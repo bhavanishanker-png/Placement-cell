@@ -2,31 +2,36 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SignImg from '../assets/SignImg.jpg';
 import { signin } from '../api/api.js';
-import { useAuth } from '../Context/AuthContext';  // Import your AuthContext
+import { useAuth } from '../Context/AuthContext'; // Import your AuthContext
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);  // Add loading state
+  const [loading, setLoading] = useState(false); // Add loading state
   const navigate = useNavigate();
-  const { setLoginState } = useAuth();  // Access setLoginState from AuthContext
+  const { setLoginState } = useAuth(); // Access setLoginState from AuthContext
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);  // Set loading to true when login starts
+    setLoading(true); // Set loading to true when login starts
 
     try {
       const result = await signin(email, password);
-      alert(result.message);  // Successful login message
-      setLoginState(true);  // Set login state to true
-      localStorage.setItem('isLoggedIn', true);  // Persist login state in localStorage
-      navigate('/dashboard');  // Redirect to dashboard on successful login
+      alert(result.message); // Successful login message
+
+      // Store the JWT token in local storage
+      const { token } = result; // Assuming the token is returned in the response
+      localStorage.setItem('authToken', token); // Store the token
+      setLoginState(true); // Set login state to true
+      localStorage.setItem('isLoggedIn', true); // Persist login state in localStorage
+
+      navigate('/dashboard'); // Redirect to dashboard on successful login
     } catch (error) {
-      setError(error.response?.data?.message || 'Error logging in');  // Handle login error
+      setError(error.response?.data?.message || 'Error logging in'); // Handle login error
     } finally {
-      setLoading(false);  // Reset loading state
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -68,7 +73,7 @@ const SignIn = () => {
             <button
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="submit"
-              disabled={loading}  // Disable button while loading
+              disabled={loading} // Disable button while loading
             >
               {loading ? 'Logging in...' : 'Log In'}
             </button>
