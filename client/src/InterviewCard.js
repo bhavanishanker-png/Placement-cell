@@ -130,6 +130,7 @@ const handleEditInterview = async () => {
                 <span>{interview.companyName}</span>
               </div>
               <div className="flex justify-between items-center p-2 border-b border-gray-300">
+              <strong className="text-gray-900">Interview Date:</strong>
                <span>{new Date(interview.date).toLocaleDateString()}</span>
               </div>
               {/* <div className="flex justify-between items-center p-2 border-b border-gray-300">
