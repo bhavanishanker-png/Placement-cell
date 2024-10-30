@@ -19,8 +19,6 @@ const SignIn = () => {
 
     try {
       const result = await signin(email, password);
-      alert(result.message); // Successful login message
-
       // Store the JWT token in local storage
       const { token } = result; // Assuming the token is returned in the response
       localStorage.setItem('authToken', token); // Store the token
