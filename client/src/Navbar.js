@@ -23,6 +23,7 @@ const Navbar = () => {
     navigate("/signin");
 };
 
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);  // Toggle mobile menu
   };
