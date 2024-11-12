@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const backendURL = "https://server-placement.vercel.app" ||"http://localhost:5001";
+const backendURL = "https://server-placement.vercel.app" || "http://localhost:5001";
 
 const InterviewCard = ({ interview, refreshInterviews }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,6 @@ const InterviewCard = ({ interview, refreshInterviews }) => {
   // Get the auth token from localStorage
   const getToken = () => {
     const token = localStorage.getItem("authToken");
-    console.log("Token fetched:", token); // Debugging token
     return token;
   };
 
@@ -51,28 +50,30 @@ const InterviewCard = ({ interview, refreshInterviews }) => {
   // Handle interview editing
   const handleEditInterview = async () => {
     const token = getToken();
-    console.log(token)
     if (!token) {
-        alert("Please log in to edit interview details.");
-        navigate("/signin");
-        return;
+      alert("Please log in to edit interview details.");
+      navigate("/signin");
+      return;
     }
     try {
-        await axios.put(`${backendURL}/api/interviews/${interview.id}`, {
-            company: editedInterview.companyName,
-            date: editedInterview.interviewDate,
-        }, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        setEditMode(false);
-        alert("Interview updated successfully!");
-        refreshInterviews();
+      await axios.put(
+        `${backendURL}/api/interviews/${interview.id}`,
+        {
+          company: editedInterview.companyName,
+          date: editedInterview.interviewDate,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setEditMode(false);
+      alert("Interview updated successfully!");
+      refreshInterviews();
     } catch (error) {
-        console.error("Error updating interview:", error);
-        alert("Failed to update interview. Please try again.");
+      console.error("Error updating interview:", error);
+      alert("Failed to update interview. Please try again.");
     }
-};
-
+  };
 
   return (
     <div className="border border-green-300 rounded-lg mb-6 w-full shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out bg-white">
@@ -93,6 +94,7 @@ const InterviewCard = ({ interview, refreshInterviews }) => {
 
             {editMode ? (
               <>
+                {/* Edit form fields */}
                 {["companyName", "interviewDate"].map((field, index) => (
                   <div key={index} className="mb-6">
                     <label
@@ -116,13 +118,13 @@ const InterviewCard = ({ interview, refreshInterviews }) => {
                 <div className="flex justify-between mt-4">
                   <button
                     onClick={handleEditInterview}
-                    className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-5 py-2 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                    className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-5 py-2 transition-colors duration-300 shadow-md"
                   >
                     Save
                   </button>
                   <button
                     onClick={() => setEditMode(false)}
-                    className="bg-gray-400 hover:bg-gray-500 text-white rounded-lg px-5 py-2 transition-colors duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                    className="bg-gray-400 hover:bg-gray-500 text-white rounded-lg px-5 py-2 transition-colors duration-300 shadow-md"
                   >
                     Cancel
                   </button>
