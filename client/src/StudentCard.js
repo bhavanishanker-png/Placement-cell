@@ -49,7 +49,7 @@ const StudentCard = ({ student, refreshStudents }) => {
     const token = getToken();
     if (!token) {
       alert("Please log in to edit student details.");
-      navigate("/login");
+      navigate("/signin");
       return;
     }
 

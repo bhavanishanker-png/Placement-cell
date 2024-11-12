@@ -14,6 +14,7 @@ const AddInterview = () => {
       try {
         const response = await fetch(`${backendURL}/api/interviews`);
         const data = await response.json();
+        console.log(date)
         setExistingInterviews(data);
       } catch (error) {
         console.error('Error fetching interviews:', error);
@@ -27,15 +28,13 @@ const AddInterview = () => {
     e.preventDefault();
 
     const interviewData = { company, date };
-
-    // Check if the date is valid (not in the past)
-    const today = new Date().toISOString().split("T")[0];  // Get today's date in YYYY-MM-DD format
+    
+    const today = new Date().toISOString().split("T")[0];  
     if (date < today) {
       setMessage("Interview date cannot be in the past.");
       return;
     }
-
-    // Check for duplicates
+    
     const isDuplicateInterview = existingInterviews.some(
       (interview) => interview.company === company && interview.date === date
     );

@@ -7,7 +7,7 @@ const ScheduledInterviews = () => {
     const [interviews, setInterviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    console.log(interviews)
     const fetchInterviewData = async () => {
         try {
             const response = await fetch(`${backendURL}/api/interviews`);

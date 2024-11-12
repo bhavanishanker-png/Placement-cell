@@ -18,9 +18,10 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setLoginState(false);
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isLoggedIn');  // Removes login state flag
+    localStorage.removeItem('authToken');       // Removes the stored token
     navigate("/signin");
-  };
+};
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);  // Toggle mobile menu
